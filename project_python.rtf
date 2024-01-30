@@ -1,0 +1,604 @@
+{\rtf1\ansi\ansicpg1252\cocoartf2639
+\cocoatextscaling0\cocoaplatform0{\fonttbl\f0\fmodern\fcharset0 Courier;}
+{\colortbl;\red255\green255\blue255;\red191\green100\blue38;\red32\green32\blue32;\red153\green168\blue186;
+\red152\green54\blue29;\red88\green118\blue71;\red117\green114\blue185;\red109\green109\blue109;\red86\green132\blue173;
+\red254\green187\blue91;}
+{\*\expandedcolortbl;;\csgenericrgb\c74902\c39216\c14902;\csgenericrgb\c12549\c12549\c12549;\csgenericrgb\c60000\c65882\c72941;
+\csgenericrgb\c59608\c21176\c11373;\csgenericrgb\c34510\c46275\c27843;\csgenericrgb\c45882\c44706\c72549;\csgenericrgb\c42745\c42745\c42745;\csgenericrgb\c33725\c51765\c67843;
+\csgenericrgb\c99608\c73333\c35686;}
+\paperw11900\paperh16840\margl1440\margr1440\vieww11520\viewh8400\viewkind0
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural\partightenfactor0
+
+\f0\fs26 \cf2 \cb3 import \cf4 pandas \cf2 as \cf4 pd\
+\cf2 import \cf4 numpy \cf2 as \cf4 np\
+\cf2 import \cf4 csv\
+\cf2 import \cf4 matplotlib.pyplot \cf2 as \cf4 plt\
+\cf2 import \cf4 seaborn \cf2 as \cf4 sns\
+\
+sns.set(\cf5 style\cf4 =\cf6 "whitegrid"\cf4 )\
+\
+\cf2 with \cf7 open\cf4 (\cf6 '/Users/donetra/Downloads/project.csv'\cf4 ) \cf2 as \cf4 file:\
+    reader = csv.reader(file)\
+\cf6 '''for row in reader:\
+        print(row)'''\
+\
+\cf4 df = pd.read_csv(\cf6 '/Users/donetra/Downloads/project.csv'\cf4 )\
+\cf8 # print the data frame\
+# print(df)\
+\
+# print(type(df))\
+\cf4 datatypes = df.dtypes\
+\cf8 # print(datatypes)\
+\cf7 print\cf4 (df.columns)\
+\cf8 # .......................Working with '?'\
+\
+\cf4 missing_values = [\cf6 "?"\cf4 ]\
+df = pd.read_csv(\cf6 '/Users/donetra/Downloads/project.csv'\cf2 , \cf5 na_values\cf4 =missing_values)\
+\
+\cf7 print\cf4 (df.describe())\
+\
+\cf8 # .......................Converting negative numbers to positive numbers for age\
+\cf4 df[\cf6 'Network_age'\cf4 ] = df[\cf6 'Network_age'\cf4 ].abs()\
+\
+\cf8 # .......................Checking null values\
+\cf7 print\cf4 (df.isnull().sum())\
+df_inter = df.interpolate\
+df_fill = df.fillna(\cf5 method\cf4 =\cf6 'ffill'\cf4 )\
+\cf8 # print(df_fill.to_string())\
+\
+\cf7 print\cf4 (\cf7 type\cf4 (df_fill))\
+\cf7 print\cf4 (\cf6 'Filling done'\cf4 )\
+\
+\cf8 # print(df_fill.columns)\
+# li_index = list(df_fill.columns)\
+# print(li_index)\
+\cf6 '''Index(['Network_age', ' Aggregate_Total_Rev', ' Aggregate_SMS_Rev',\
+       ' Aggregate_Data_Rev', ' Aggregate_Data_Vol', ' Aggregate_Calls',\
+       ' Aggregate_ONNET_REV', ' Aggregate_OFFNET_REV',\
+       ' Aggregate_complaint_count', ' Aug_user_type', ' Sep_user_type',\
+       ' Aug_fav_a', ' Sep_fav_a', ' Class'],\
+      dtype='object')\
+'''\
+\cf7 print\cf4 (\cf6 '\cf2 \\n\cf6 '\cf4 )\
+\
+\cf8 # ..................Describe Data\
+\cf7 print\cf4 (df_fill.describe())\
+\cf8 # .........................................................Descriptive statistics\
+\
+\cf7 print\cf4 (\cf6 'Descriptive Analysis'\cf4 )\
+\
+\cf2 while True\cf4 :\
+    \cf7 print\cf4 (\cf6 'The options are as follows :'\cf4 )\
+    \cf7 print\cf4 (\cf6 '1 : Related to age input \cf2 \\n\cf6 To show records and related averages as per user age input'\cf4 )\
+    \cf7 print\cf4 (\cf6 '\cf2 \\n\cf6 '\cf4 )\
+    \cf7 print\cf4 (\cf6 '2 : Related to Churn Class \cf2 \\n\cf6 To show data in relation with Churn Class (Crossstab)'\cf4 )\
+    \cf7 print\cf4 (\cf6 '\cf2 \\n\cf6 '\cf4 )\
+    \cf7 print\cf4 (\
+        \cf6 '3 : Aggregate Values with churn index \cf2 \\n\cf6 To show data with details of sum, mean and median in respect to churn status (Pivot Table)'\cf4 )\
+    \cf7 print\cf4 (\cf6 '\cf2 \\n\cf6 '\cf4 )\
+    \cf7 print\cf4 (\cf6 '4 : Exit'\cf4 )\
+    user_option = \cf7 int\cf4 (\cf7 input\cf4 (\cf6 'Enter the choice from given options :'\cf4 ))\
+\
+    \cf2 if \cf4 user_option \cf2 in \cf7 range\cf4 (\cf9 4\cf4 ):\
+        \cf2 if \cf4 user_option == \cf9 1\cf4 :\
+\
+            \cf2 while True\cf4 :\
+                \cf7 print\cf4 (\cf6 'Available options are :\cf2 \\n\cf6 '\
+                      '1. Display records for particular age\cf2 \\n\cf6 '\
+                      '2. Display records <= particular age\cf2 \\n\cf6 '\
+                      '3. Display average total revenue generated for particular age\cf2 \\n\cf6 '\
+                      '4. Display average total revenue generated <= particular age\cf2 \\n\cf6 '\
+                      '5. Display average data volume for particular age\cf2 \\n\cf6 '\
+                      '6. Display average data volume <= particular age\cf2 \\n\cf6 '\
+                      '7. Display average complaint count for particular age\cf2 \\n\cf6 '\
+                      '8. Display average complaint count<= particular age\cf2 \\n\cf6 '\
+                      '9. Display average calls for particular age\cf2 \\n\cf6 '\
+                      '10. Display average calls <= particular age'\cf4 )\
+                user_input = \cf7 int\cf4 (\cf7 input\cf4 (\cf6 'Enter the Choice from given sub-options'\cf4 ))\
+                \cf2 if \cf4 user_input \cf2 in \cf7 range\cf4 (\cf9 11\cf4 ):\
+                    \cf2 if \cf4 user_input == \cf9 1\cf4 :\
+                        \cf8 # showing entries for given age input\
+                        \cf4 age_0 = \cf7 int\cf4 (\cf7 input\cf4 (\cf6 'Enter the age for which records are to be displayed :'\cf4 ))\
+                        \cf7 print\cf4 (df[df_fill[\cf6 'Network_age'\cf4 ] == age_0])\
+\
+                    \cf2 elif \cf4 user_input == \cf9 2\cf4 :\
+                        \cf8 # showing entries for <= given age input\
+                        \cf4 age_1 = \cf7 int\cf4 (\cf7 input\cf4 (\cf6 'Enter the age till which records are to be displayed :'\cf4 ))\
+                        \cf7 print\cf4 (df[df_fill[\cf6 'Network_age'\cf4 ] <= age_1])\
+\
+                    \cf2 elif \cf4 user_input == \cf9 3\cf4 :\
+                        \cf8 # showing total revenue for age input\
+                        \cf4 age = \cf7 int\cf4 (\cf7 input\cf4 (\cf6 'Enter the network age to see total revenue generated for the exact entry:'\cf4 ))\
+                        df_age = df[df_fill[\cf6 'Network_age'\cf4 ] == age]\
+                        \cf7 print\cf4 (df_age)\
+                        \cf7 print\cf4 (\cf6 'The total average revenue generated for given age is:'\cf2 ,\
+                              \cf4 df_age[\cf6 ' Aggregate_Total_Rev'\cf4 ].mean())\
+\
+                    \cf2 elif \cf4 user_input == \cf9 4\cf4 :\
+                        \cf8 # showing total revenue for <= age input\
+                        \cf4 age_l = \cf7 int\cf4 (\cf7 input\cf4 (\
+                            \cf6 'Enter the network age to see the total average revenue generated for all less than ages till the given:'\cf4 ))\
+                        df_age_less = df[df_fill[\cf6 'Network_age'\cf4 ] <= age_l]\
+                        \cf7 print\cf4 (df_age_less)\
+                        \cf7 print\cf4 (\cf6 'The total average revenue generated till the given age is:'\cf2 ,\
+                              \cf4 df_age_less[\cf6 ' Aggregate_Total_Rev'\cf4 ].mean())\
+\
+                    \cf2 elif \cf4 user_input == \cf9 5\cf4 :\
+                        \cf8 # Display average data volume for age\
+                        \cf4 age_2 = \cf7 int\cf4 (\cf7 input\cf4 (\cf6 'Enter the age:'\cf4 ))\
+                        df_age_2 = df[df_fill[\cf6 'Network_age'\cf4 ] == age_2]\
+                        \cf7 print\cf4 (\cf6 'The total average data volume for given age is:'\cf2 , \cf4 df_age_2[\cf6 ' Aggregate_Data_Vol'\cf4 ].mean())\
+\
+                    \cf2 elif \cf4 user_input == \cf9 6\cf4 :\
+                        \cf8 # Display average data volume <= age\
+                        \cf4 age_3 = \cf7 int\cf4 (\cf7 input\cf4 (\cf6 'Enter the age:'\cf4 ))\
+                        df_age_3 = df[df_fill[\cf6 'Network_age'\cf4 ] <= age_3]\
+                        \cf7 print\cf4 (\cf6 'The total average data volume till and including given age is:'\cf2 ,\
+                              \cf4 df_age_3[\cf6 ' Aggregate_Data_Vol'\cf4 ].mean())\
+\
+                    \cf2 elif \cf4 user_input == \cf9 7\cf4 :\
+                        \cf8 # Display average complaint for age\
+                        \cf4 age_4 = \cf7 int\cf4 (\cf7 input\cf4 (\cf6 'Enter the age:'\cf4 ))\
+                        df_age_4 = df[df_fill[\cf6 'Network_age'\cf4 ] == age_4]\
+                        \cf7 print\cf4 (\cf6 'The total average complaint count for given age is:'\cf2 ,\
+                              \cf4 df_age_4[\cf6 ' Aggregate_complaint_count'\cf4 ].mean())\
+\
+                    \cf2 elif \cf4 user_input == \cf9 8\cf4 :\
+                        \cf8 # Display average complaint <= age\
+                        \cf4 age_5 = \cf7 int\cf4 (\cf7 input\cf4 (\cf6 'Enter the age:'\cf4 ))\
+                        df_age_5 = df[df_fill[\cf6 'Network_age'\cf4 ] <= age_4]\
+                        \cf7 print\cf4 (\cf6 'The total average complaint count till and including given age is:'\cf2 ,\
+                              \cf4 df_age_5[\cf6 ' Aggregate_complaint_count'\cf4 ].mean())\
+\
+                    \cf2 elif \cf4 user_input == \cf9 9\cf4 :\
+                        \cf8 # Display average calls for age\
+                        \cf4 age_6 = \cf7 int\cf4 (\cf7 input\cf4 (\cf6 'Enter the age:'\cf4 ))\
+                        df_age_6 = df[df_fill[\cf6 'Network_age'\cf4 ] == age_6]\
+                        \cf7 print\cf4 (\cf6 'The total average calls for given age is:'\cf2 , \cf4 df_age_6[\cf6 ' Aggregate_Calls'\cf4 ].mean())\
+\
+                    \cf2 elif \cf4 user_input == \cf9 10\cf4 :\
+                        \cf8 # Display average calls <= age\
+                        \cf4 age_7 = \cf7 int\cf4 (\cf7 input\cf4 (\cf6 'Enter the age:'\cf4 ))\
+                        df_age_7 = df[df_fill[\cf6 'Network_age'\cf4 ] <= age_7]\
+                        \cf7 print\cf4 (\cf6 'The total average calls for till and including given age is:'\cf2 ,\
+                              \cf4 df_age_7[\cf6 ' Aggregate_Calls'\cf4 ].mean())\
+\
+                    \cf2 else\cf4 :\
+                        \cf7 print\cf4 (\cf6 'Invalid input'\cf4 )\
+\
+                    next_op = \cf7 input\cf4 (\cf6 'Want to see more age related data ? (yes/no): '\cf4 )\
+                    \cf2 if \cf4 next_op == \cf6 "no"\cf4 :\
+                        \cf2 break\
+\
+        if \cf4 user_option == \cf9 2\cf4 :\
+\
+            \cf2 while True\cf4 :\
+                \cf7 print\cf4 (\cf6 'Available options are :\cf2 \\n\cf6 '\
+                      '1. August mobile operator in each churn class\cf2 \\n\cf6 '\
+                      '2. September mobile operator in each churn class\cf2 \\n\cf6 '\
+                      '3. August user type in each churn class\cf2 \\n\cf6 '\
+                      '4. September user type in each churn class\cf2 \\n\cf6 '\
+                      '5. Median for Network age in each churn class\cf2 \\n\cf6 '\
+                      '6. Average churn rate in each churn class'\cf4 )\
+\
+                user_input_2 = \cf7 int\cf4 (\cf7 input\cf4 (\cf6 'Enter the Choice from given sub-options'\cf4 ))\
+                \cf2 if \cf4 user_input_2 \cf2 in \cf7 range\cf4 (\cf9 7\cf4 ):\
+                    \cf2 if \cf4 user_input_2 == \cf9 1\cf4 :\
+                        \cf7 print\cf4 (\cf6 'August mobile operator in each churn class'\cf4 )\
+                        \cf7 print\cf4 (pd.crosstab(df_fill[\cf6 ' Aug_fav_a'\cf4 ]\cf2 , \cf4 df_fill[\cf6 ' Class'\cf4 ]))\
+\
+                    \cf2 elif \cf4 user_input_2 == \cf9 2\cf4 :\
+                        \cf7 print\cf4 (\cf6 'September mobile operator in each churn class'\cf4 )\
+                        \cf7 print\cf4 (pd.crosstab(df_fill[\cf6 ' Sep_fav_a'\cf4 ]\cf2 , \cf4 df_fill[\cf6 ' Class'\cf4 ]))\
+\
+                    \cf2 elif \cf4 user_input_2 == \cf9 3\cf4 :\
+                        \cf7 print\cf4 (\cf6 'August user type in each churn class'\cf4 )\
+                        \cf7 print\cf4 (pd.crosstab(df_fill[\cf6 ' Aug_user_type'\cf4 ]\cf2 , \cf4 df_fill[\cf6 ' Class'\cf4 ]))\
+\
+                    \cf2 elif \cf4 user_input_2 == \cf9 4\cf4 :\
+                        \cf7 print\cf4 (\cf6 'September user type in each churn class'\cf4 )\
+                        \cf7 print\cf4 (pd.crosstab(df_fill[\cf6 ' Sep_user_type'\cf4 ]\cf2 , \cf4 df_fill[\cf6 ' Class'\cf4 ]))\
+\
+                    \cf2 elif \cf4 user_input_2 == \cf9 5\cf4 :\
+                        \cf7 print\cf4 (\cf6 'Median for Network age in each Class section: \cf2 \\n\cf6 \{\}'\cf4 .format(\
+                            df_fill[[\cf6 ' Class'\cf2 , \cf6 'Network_age'\cf4 ]].groupby(\cf6 ' Class'\cf4 ).median()))\
+\
+                    \cf2 elif \cf4 user_input_2 == \cf9 6\cf4 :\
+                        \cf7 print\cf4 (\cf6 'Average churn rate in each Class section: \cf2 \\n\cf6 \{\}'\cf4 .format(\
+                            df_fill[[\cf6 ' Class'\cf2 , \cf6 'Network_age'\cf4 ]].groupby(\cf6 ' Class'\cf4 ).mean()))\
+\
+                    \cf2 else\cf4 :\
+                        \cf7 print\cf4 (\cf6 'Invalid input'\cf4 )\
+\
+                    next_op = \cf7 input\cf4 (\cf6 'Want to see more records related to churn class ? (yes/no): '\cf4 )\
+                    \cf2 if \cf4 next_op == \cf6 "no"\cf4 :\
+                        \cf2 break\
+\
+        if \cf4 user_option == \cf9 3\cf4 :\
+\
+            \cf2 while True\cf4 :\
+                \cf7 print\cf4 (\cf6 'Available options are :\cf2 \\n\cf6 '\
+                      '1. Network age in each churn Class\cf2 \\n\cf6 '\
+                      '2. SMS revenue generated in each churn class\cf2 \\n\cf6 '\
+                      '3. Data revenue generated in each churn class\cf2 \\n\cf6 '\
+                      '4. On-net revenue generated in each churn class\cf2 \\n\cf6 '\
+                      '5. Off-net revenue generated in each churn class\cf2 \\n\cf6 '\
+                      '6. Total revenue generated in each churn class\cf2 \\n\cf6 '\
+                      '7. Data Volume generated in each churn class\cf2 \\n\cf6 '\
+                      '8. Complaint count in each churn class\cf2 \\n\cf6 '\
+                      '9. Calls in each churn class'\cf4 )\
+                user_input_3 = \cf7 int\cf4 (\cf7 input\cf4 (\cf6 'Enter the Choice from given sub-options'\cf4 ))\
+                \cf2 if \cf4 user_input_3 \cf2 in \cf7 range\cf4 (\cf9 10\cf4 ):\
+                    \cf2 if \cf4 user_input_3 == \cf9 1\cf4 :\
+                        \cf7 print\cf4 (pd.pivot_table(df_fill\cf2 , \cf5 values\cf4 =[\cf6 'Network_age'\cf4 ]\cf2 , \cf5 index\cf4 =[\cf6 ' Class'\cf4 ]\cf2 ,\
+                                             \cf5 aggfunc\cf4 =[\cf7 len\cf2 , \cf4 np.sum\cf2 , \cf4 np.mean\cf2 , \cf4 np.median]))\
+                    \cf2 elif \cf4 user_input_3 == \cf9 2\cf4 :\
+                        \cf7 print\cf4 (pd.pivot_table(df_fill\cf2 , \cf5 values\cf4 =[\cf6 ' Aggregate_SMS_Rev'\cf4 ]\cf2 , \cf5 index\cf4 =[\cf6 ' Class'\cf4 ]\cf2 ,\
+                                             \cf5 aggfunc\cf4 =[\cf7 len\cf2 , \cf4 np.sum\cf2 , \cf4 np.mean\cf2 , \cf4 np.median]))\
+                    \cf2 elif \cf4 user_input_3 == \cf9 3\cf4 :\
+                        \cf7 print\cf4 (pd.pivot_table(df_fill\cf2 , \cf5 values\cf4 =[\cf6 ' Aggregate_Data_Rev'\cf4 ]\cf2 , \cf5 index\cf4 =[\cf6 ' Class'\cf4 ]\cf2 ,\
+                                             \cf5 aggfunc\cf4 =[\cf7 len\cf2 , \cf4 np.sum\cf2 , \cf4 np.mean\cf2 , \cf4 np.median]))\
+                    \cf2 elif \cf4 user_input_3 == \cf9 4\cf4 :\
+                        \cf7 print\cf4 (pd.pivot_table(df_fill\cf2 , \cf5 values\cf4 =[\cf6 ' Aggregate_ONNET_REV'\cf4 ]\cf2 , \cf5 index\cf4 =[\cf6 ' Class'\cf4 ]\cf2 ,\
+                                             \cf5 aggfunc\cf4 =[\cf7 len\cf2 , \cf4 np.sum\cf2 , \cf4 np.mean\cf2 , \cf4 np.median]))\
+                    \cf2 elif \cf4 user_input_3 == \cf9 5\cf4 :\
+                        \cf7 print\cf4 (pd.pivot_table(df_fill\cf2 , \cf5 values\cf4 =[\cf6 ' Aggregate_OFFNET_REV'\cf4 ]\cf2 , \cf5 index\cf4 =[\cf6 ' Class'\cf4 ]\cf2 ,\
+                                             \cf5 aggfunc\cf4 =[\cf7 len\cf2 , \cf4 np.sum\cf2 , \cf4 np.mean\cf2 , \cf4 np.median]))\
+                    \cf2 elif \cf4 user_input_3 == \cf9 6\cf4 :\
+                        \cf7 print\cf4 (pd.pivot_table(df_fill\cf2 , \cf5 values\cf4 =[\cf6 ' Aggregate_Total_Rev'\cf4 ]\cf2 , \cf5 index\cf4 =[\cf6 ' Class'\cf4 ]\cf2 ,\
+                                             \cf5 aggfunc\cf4 =[\cf7 len\cf2 , \cf4 np.sum\cf2 , \cf4 np.mean\cf2 , \cf4 np.median]))\
+                    \cf2 elif \cf4 user_input_3 == \cf9 7\cf4 :\
+                        \cf7 print\cf4 (pd.pivot_table(df_fill\cf2 , \cf5 values\cf4 =[\cf6 ' Aggregate_Data_Vol'\cf4 ]\cf2 , \cf5 index\cf4 =[\cf6 ' Class'\cf4 ]\cf2 ,\
+                                             \cf5 aggfunc\cf4 =[\cf7 len\cf2 , \cf4 np.sum\cf2 , \cf4 np.mean\cf2 , \cf4 np.median]))\
+                    \cf2 elif \cf4 user_input_3 == \cf9 8\cf4 :\
+                        \cf7 print\cf4 (pd.pivot_table(df_fill\cf2 , \cf5 values\cf4 =[\cf6 ' Aggregate_complaint_count'\cf4 ]\cf2 , \cf5 index\cf4 =[\cf6 ' Class'\cf4 ]\cf2 ,\
+                                             \cf5 aggfunc\cf4 =[\cf7 len\cf2 , \cf4 np.sum\cf2 , \cf4 np.mean\cf2 , \cf4 np.median]))\
+                    \cf2 elif \cf4 user_input_3 == \cf9 9\cf4 :\
+                        \cf7 print\cf4 (pd.pivot_table(df_fill\cf2 , \cf5 values\cf4 =[\cf6 ' Aggregate_Calls'\cf4 ]\cf2 , \cf5 index\cf4 =[\cf6 ' Class'\cf4 ]\cf2 ,\
+                                             \cf5 aggfunc\cf4 =[\cf7 len\cf2 , \cf4 np.sum\cf2 , \cf4 np.mean\cf2 , \cf4 np.median]))\
+                    \cf2 else\cf4 :\
+                        \cf7 print\cf4 (\cf6 'Invalid input'\cf4 )\
+\
+                    next_op = \cf7 input\cf4 (\cf6 "want to show more aggregate data with churn index? (yes/no): "\cf4 )\
+                    \cf2 if \cf4 next_op == \cf6 "no"\cf4 :\
+                        \cf2 break\
+    if \cf4 user_option == \cf9 4\cf4 :\
+        \cf2 break\
+\
+    else\cf4 :\
+        \cf7 print\cf4 (\cf6 "Invalid Input"\cf4 )\
+\
+\cf8 # ....................................Diagnostic Analysis\
+\cf7 print\cf4 (\cf6 'Proceed towards Diagnostic Analysis'\cf4 )\
+\cf2 while True\cf4 :\
+    user_ans = \cf7 input\cf4 (\cf6 "Let's proceed towards Diagnostic Analysis (yes/no)?"\cf4 )\
+    \cf2 if \cf4 user_ans == \cf6 'yes'\cf4 :\
+        \cf8 # let's check whether any relation exists between aggregate complaints counts by customer and customer churn\
+        \cf7 print\cf4 (\cf6 "lets check relation between aggregate complaints counts by customer and customer churn"\cf4 )\
+\
+        \cf7 print\cf4 (\cf6 "\cf2 \\n\cf6 Complain count distribution for churned subscriber \cf2 \\n\cf6  "\cf2 ,\
+              \cf4 df[df_fill[\cf6 ' Class'\cf4 ] == \cf6 "Churned"\cf4 ][\cf6 " Aggregate_complaint_count"\cf4 ].describe())\
+        \cf7 print\cf4 (\cf6 "\cf2 \\n\cf6 "\cf4 )\
+        \cf7 print\cf4 (\cf6 "\cf2 \\n\cf6 Complain count distribution for active subscriber \cf2 \\n\cf6  "\cf2 ,\
+              \cf4 df[df_fill[\cf6 ' Class'\cf4 ] == \cf6 "Active"\cf4 ][\cf6 " Aggregate_complaint_count"\cf4 ].describe())\
+\
+        \cf8 # let's check Complain count distribution for each type of subscriber where complaint count is more than 2\
+        \cf7 print\cf4 (\cf6 "As max complaint count data lies in as 1 and 2, So let's work at the remaining data"\cf4 )\
+        \cf7 print\cf4 (\cf6 "lets check relation between aggregate complaints counts > 2 by customer and customer churn"\cf4 )\
+\
+        \cf7 print\cf4 (\cf6 "\cf2 \\n\cf6 Complain count distribition > 2 for churned subscriber  \cf2 \\n\cf6  "\cf2 ,\
+              \cf4 df[(df_fill[\cf6 ' Class'\cf4 ] == \cf6 "Churned"\cf4 ) & (df_fill[\cf6 " Aggregate_complaint_count"\cf4 ] > \cf9 2\cf4 )][\
+                  \cf6 " Aggregate_complaint_count"\cf4 ].describe())\
+        \cf7 print\cf4 (\cf6 "\cf2 \\n\cf6 "\cf4 )\
+        \cf7 print\cf4 (\cf6 "\cf2 \\n\cf6 Complain count distribition > 2 for active subscriber \cf2 \\n\cf6  "\cf2 ,\
+              \cf4 df[(df_fill[\cf6 ' Class'\cf4 ] == \cf6 "Active"\cf4 ) & (df_fill[\cf6 " Aggregate_complaint_count"\cf4 ] > \cf9 2\cf4 )][\
+                  \cf6 " Aggregate_complaint_count"\cf4 ].describe())\
+\
+        \cf8 # lets check whether any relation exists between from how long time customer taking services and customer churn\
+\
+        \cf7 print\cf4 (\cf6 "\cf2 \\n\cf6 Network age distribition for churned subscriber \cf2 \\n\cf6  "\cf2 ,\
+              \cf4 df[df_fill[\cf6 ' Class'\cf4 ] == \cf6 "Churned"\cf4 ][\cf6 "Network_age"\cf4 ].describe())\
+        \cf7 print\cf4 (\cf6 "\cf2 \\n\cf6 Network age distribition for active subscriber \cf2 \\n\cf6  "\cf2 ,\
+              \cf4 df[df_fill[\cf6 ' Class'\cf4 ] == \cf6 "Active"\cf4 ][\cf6 "Network_age"\cf4 ].describe())\
+        \cf7 print\cf4 (\cf6 "\cf2 \\n\cf6 Network age distribition for churned subscriber \cf2 \\n\cf6  "\cf2 ,\
+              \cf4 df[(df_fill[\cf6 ' Class'\cf4 ] == \cf6 "Churned"\cf4 ) & (df_fill[\cf6 "Network_age"\cf4 ] >= \cf9 0\cf4 )][\cf6 "Network_age"\cf4 ].describe())\
+        \cf7 print\cf4 (\cf6 "\cf2 \\n\cf6 "\cf4 )\
+        \cf7 print\cf4 (\cf6 "\cf2 \\n\cf6 Network age distribition for active subscriber \cf2 \\n\cf6  "\cf2 ,\
+              \cf4 df[df_fill[\cf6 ' Class'\cf4 ] == \cf6 "Active"\cf4 ][\cf6 "Network_age"\cf4 ].describe())\
+\
+        next_op = \cf7 input\cf4 (\cf6 "Want to check diagnostic once more? (yes/no): "\cf4 )\
+        \cf2 if \cf4 next_op == \cf6 "no"\cf4 :\
+            \cf2 break\
+\
+    elif \cf4 user_ans == \cf6 'no'\cf4 :\
+        \cf2 break\
+\
+    else\cf4 :\
+        \cf7 print\cf4 (\cf6 'Invalid inout'\cf4 )\
+\
+\cf6 '''Index(['Network_age', ' Aggregate_Total_Rev', ' Aggregate_SMS_Rev',\
+       ' Aggregate_Data_Rev', ' Aggregate_Data_Vol', ' Aggregate_Calls',\
+       ' Aggregate_ONNET_REV', ' Aggregate_OFFNET_REV',\
+       ' Aggregate_complaint_count', ' Aug_user_type', ' Sep_user_type',\
+       ' Aug_fav_a', ' Sep_fav_a', ' Class'],\
+      dtype='object')\
+'''\
+\cf8 # ...........................................Visualization\
+\cf2 while True\cf4 :\
+    user_ans_1 = \cf7 input\cf4 (\cf6 "Proceed towards Visualization (yes/no)?"\cf4 )\
+    \cf2 if \cf4 user_ans_1 == \cf6 'yes'\cf4 :\
+        cols = [\cf6 ' Aug_fav_a'\cf2 , \cf6 ' Sep_fav_a'\cf4 ]\
+        numerical = cols\
+\
+        plt.figure(\cf5 figsize\cf4 =(\cf9 20\cf2 , \cf9 4\cf4 ))\
+\
+        \cf2 for \cf4 i\cf2 , \cf4 col \cf2 in \cf7 enumerate\cf4 (numerical):\
+            ax = plt.subplot(\cf9 1\cf2 , \cf7 len\cf4 (numerical)\cf2 , \cf4 i + \cf9 1\cf4 )\
+            sns.countplot(\cf5 x\cf4 =\cf7 str\cf4 (col)\cf2 , \cf5 data\cf4 =df_fill)\
+            ax.set_title(\cf6 f"\cf2 \{\cf4 col\cf2 \}\cf6 "\cf4 )\
+        plt.show()\
+\
+        sns.boxplot(\cf5 x\cf4 =\cf6 ' Class'\cf2 , \cf5 y\cf4 =\cf6 ' Aggregate_Total_Rev'\cf2 , \cf5 data\cf4 =df_fill)\
+        plt.show()\
+\
+        sns.boxplot(\cf5 x\cf4 =\cf6 ' Aug_user_type'\cf2 , \cf5 y\cf4 =\cf6 'Network_age'\cf2 , \cf5 data\cf4 =df_fill)\
+        plt.show()\
+\
+        sns.boxplot(\cf5 x\cf4 =\cf6 ' Sep_user_type'\cf2 , \cf5 y\cf4 =\cf6 'Network_age'\cf2 , \cf5 data\cf4 =df_fill)\
+        plt.show()\
+\
+        plt.subplot(\cf9 1\cf2 , \cf9 5\cf2 , \cf9 1\cf4 )\
+        sns.scatterplot(\cf5 y\cf4 =df_fill[\cf6 ' Class'\cf4 ]\cf2 , \cf5 x\cf4 =df_fill[\cf6 ' Aggregate_Calls'\cf4 ])\
+        plt.subplot(\cf9 1\cf2 , \cf9 5\cf2 , \cf9 2\cf4 )\
+        sns.scatterplot(\cf5 y\cf4 =df_fill[\cf6 ' Class'\cf4 ]\cf2 , \cf5 x\cf4 =df_fill[\cf6 ' Aggregate_ONNET_REV'\cf4 ])\
+        plt.subplot(\cf9 1\cf2 , \cf9 5\cf2 , \cf9 3\cf4 )\
+        sns.scatterplot(\cf5 y\cf4 =df_fill[\cf6 ' Class'\cf4 ]\cf2 , \cf5 x\cf4 =df_fill[\cf6 ' Aggregate_OFFNET_REV'\cf4 ])\
+        plt.subplot(\cf9 1\cf2 , \cf9 5\cf2 , \cf9 4\cf4 )\
+        sns.scatterplot(\cf5 y\cf4 =df_fill[\cf6 ' Class'\cf4 ]\cf2 , \cf5 x\cf4 =df_fill[\cf6 ' Aggregate_SMS_Rev'\cf4 ])\
+        plt.subplot(\cf9 1\cf2 , \cf9 5\cf2 , \cf9 5\cf4 )\
+        sns.scatterplot(\cf5 y\cf4 =df_fill[\cf6 ' Class'\cf4 ]\cf2 , \cf5 x\cf4 =df_fill[\cf6 'Network_age'\cf4 ])\
+        plt.suptitle(\cf6 "Checking for Bi variate Outliers"\cf4 )\
+        plt.show()\
+\
+        next_op = \cf7 input\cf4 (\cf6 "Want to check visualization once more? (yes/no): "\cf4 )\
+        \cf2 if \cf4 next_op == \cf6 "no"\cf4 :\
+            \cf2 break\
+\
+    elif \cf4 user_ans_1 == \cf6 'no'\cf4 :\
+        \cf2 break\
+\
+    else\cf4 :\
+        \cf7 print\cf4 (\cf6 'Invalid inout'\cf4 )\
+\
+\cf8 # ..................................Prediction\
+\cf7 print\cf4 (\cf6 '\cf2 \\n\cf6 '\cf4 )\
+\cf7 print\cf4 (\cf6 'Predictive Analysis'\cf4 )\
+\
+\cf2 while True\cf4 :\
+    user_prd = \cf7 input\cf4 (\cf6 'Proceed towards predictive analysis (yes/no)?'\cf4 )\
+    \cf2 if \cf4 user_prd == \cf6 'yes'\cf4 :\
+        categorical_var = df_fill.drop([\cf6 'Network_age'\cf2 , \cf6 ' Aggregate_Total_Rev'\cf2 , \cf6 ' Aggregate_SMS_Rev'\cf2 ,\
+                                        \cf6 ' Aggregate_Data_Rev'\cf2 , \cf6 ' Aggregate_ONNET_REV'\cf2 , \cf6 ' Aggregate_OFFNET_REV'\cf2 ,\
+                                        \cf6 ' Aggregate_complaint_count'\cf2 , \cf6 ' Aggregate_Data_Vol'\cf2 , \cf6 ' Aggregate_Calls'\cf4 ]\cf2 , \cf5 axis\cf4 =\cf9 1\cf4 )\
+\
+        \cf7 print\cf4 (categorical_var.head())\
+\
+        \cf8 # working with categorical values\
+\
+        \cf2 from \cf4 sklearn \cf2 import \cf4 preprocessing\
+\
+        le = preprocessing.LabelEncoder()\
+        df_cat = categorical_var.apply(le.fit_transform)\
+        \cf7 print\cf4 (df_cat.head())\
+\
+        num_features = df[[\cf6 'Network_age'\cf2 , \cf6 ' Aggregate_Total_Rev'\cf2 , \cf6 ' Aggregate_SMS_Rev'\cf2 ,\
+                           \cf6 ' Aggregate_Data_Rev'\cf2 , \cf6 ' Aggregate_ONNET_REV'\cf2 , \cf6 ' Aggregate_OFFNET_REV'\cf2 ,\
+                           \cf6 ' Aggregate_complaint_count'\cf2 , \cf6 ' Aggregate_Data_Vol'\cf2 , \cf6 ' Aggregate_Calls'\cf4 ]]\
+        finaldf = pd.merge(num_features\cf2 , \cf4 df_cat\cf2 , \cf5 left_index\cf4 =\cf2 True, \cf5 right_index\cf4 =\cf2 True\cf4 )\
+\
+        \cf8 # Splitting dataset into train and test models\
+\
+        \cf2 from \cf4 sklearn.model_selection \cf2 import \cf4 train_test_split\
+\
+        finaldf = finaldf.dropna()\
+\
+        X = finaldf.drop([\cf6 ' Class'\cf4 ]\cf2 , \cf5 axis\cf4 =\cf9 1\cf4 )\
+        y = finaldf[\cf6 ' Class'\cf4 ]\
+        X_train\cf2 , \cf4 X_test\cf2 , \cf4 y_train\cf2 , \cf4 y_test = train_test_split(X\cf2 , \cf4 y\cf2 , \cf5 test_size\cf4 =\cf9 0.33\cf2 , \cf5 random_state\cf4 =\cf9 42\cf4 )\
+\
+        \cf2 from \cf4 imblearn.over_sampling \cf2 import \cf4 SMOTE\
+\
+        oversample = SMOTE(\cf5 k_neighbors\cf4 =\cf9 5\cf4 )\
+        X_smote\cf2 , \cf4 y_smote = oversample.fit_resample(X_train\cf2 , \cf4 y_train)\
+        X_train\cf2 , \cf4 y_train = X_smote\cf2 , \cf4 y_smote\
+\
+        \cf8 # to check equal division of dataset\
+        \cf7 print\cf4 (\cf6 '\cf2 \\n\cf6 '\cf4 )\
+        \cf7 print\cf4 (y_train.value_counts())\
+\
+        \cf2 from \cf4 sklearn.ensemble \cf2 import \cf4 RandomForestClassifier\
+\
+        rf = RandomForestClassifier(\cf5 random_state\cf4 =\cf9 46\cf4 )\
+        rf.fit(X_train\cf2 , \cf4 y_train)\
+\
+        \cf2 from \cf4 sklearn.metrics \cf2 import \cf4 accuracy_score\
+\
+        preds = rf.predict(X_test)\
+        \cf7 print\cf4 (accuracy_score(preds\cf2 , \cf4 y_test))\
+\
+        \cf2 from \cf4 sklearn.metrics \cf2 import \cf4 accuracy_score\cf2 , \cf4 recall_score\cf2 , \cf4 confusion_matrix\
+\
+        \cf7 print\cf4 (\cf6 'Accuracy: \{\}%'\cf4 .format(\cf9 100.0 \cf4 * accuracy_score(preds\cf2 , \cf4 y_test)))\
+        \cf7 print\cf4 (\cf6 'Recall:   \{\}%'\cf4 .format(\cf9 100.0 \cf4 * recall_score(preds\cf2 , \cf4 y_test)))\
+\
+        sns.heatmap(confusion_matrix(preds\cf2 , \cf4 y_test\cf2 , \cf5 labels\cf4 =[\cf9 0\cf2 , \cf9 1\cf4 ])\cf2 , \cf5 annot\cf4 =\cf2 True, \cf5 fmt\cf4 =\cf6 "d"\cf2 , \cf5 linewidths\cf4 =\cf9 .5\cf4 )\
+        plt.ylabel(\cf6 'True label'\cf4 )\
+        plt.xlabel(\cf6 'Predicted label'\cf4 )\
+        plt.show()\
+\
+        next_op = \cf7 input\cf4 (\cf6 "Want to check comparison once more? (yes/no): "\cf4 )\
+        \cf2 if \cf4 next_op == \cf6 "no"\cf4 :\
+            \cf2 break\
+\
+    elif \cf4 user_prd == \cf6 'no'\cf4 :\
+        \cf2 break\
+\
+    else\cf4 :\
+        \cf7 print\cf4 (\cf6 'Invalid input'\cf4 )\
+\
+\cf8 # ................................ 4 models comparison\
+\
+\cf7 print\cf4 (\cf6 'Comparing prediction with 4 different Classifier '\cf4 )\
+\cf2 while True\cf4 :\
+    com_user = \cf7 input\cf4 (\cf6 'Want to proceed towards Campirson in prediction using 4 different classifiers (yes/no) ?'\cf4 )\
+    \cf2 if \cf4 com_user == \cf6 'yes'\cf4 :\
+\
+        X = df_fill.copy()\
+        data = df_fill.copy()\
+        Y = data.pop(\cf6 ' Class'\cf4 )\
+        X.pop(\cf6 ' Class'\cf4 )\
+\
+        \cf2 from \cf4 sklearn.model_selection \cf2 import \cf4 train_test_split\
+\
+        x_train\cf2 , \cf4 x_test\cf2 , \cf4 y_train\cf2 , \cf4 y_test = train_test_split(X\cf2 , \cf4 Y\cf2 , \cf5 test_size\cf4 =\cf9 0.3\cf2 , \cf5 random_state\cf4 =\cf9 42\cf4 )\
+        x_train.shape\cf2 , \cf4 x_test.shape\cf2 , \cf4 y_train.shape\cf2 , \cf4 y_test.shape\
+\
+        x_train.drop(\cf6 ' Aug_user_type'\cf2 , \cf5 axis\cf4 =\cf9 1\cf2 , \cf5 inplace\cf4 =\cf2 True\cf4 )\
+        x_train.drop(\cf6 ' Sep_user_type'\cf2 , \cf5 axis\cf4 =\cf9 1\cf2 , \cf5 inplace\cf4 =\cf2 True\cf4 )\
+        x_train.drop(\cf6 " Aug_fav_a"\cf2 , \cf5 axis\cf4 =\cf9 1\cf2 , \cf5 inplace\cf4 =\cf2 True\cf4 )\
+        x_train.drop(\cf6 " Sep_fav_a"\cf2 , \cf5 axis\cf4 =\cf9 1\cf2 , \cf5 inplace\cf4 =\cf2 True\cf4 )\
+        x_train\
+\
+        x_test.drop(\cf6 ' Aug_user_type'\cf2 , \cf5 axis\cf4 =\cf9 1\cf2 , \cf5 inplace\cf4 =\cf2 True\cf4 )\
+        x_test.drop(\cf6 ' Sep_user_type'\cf2 , \cf5 axis\cf4 =\cf9 1\cf2 , \cf5 inplace\cf4 =\cf2 True\cf4 )\
+        x_test.drop(\cf6 " Aug_fav_a"\cf2 , \cf5 axis\cf4 =\cf9 1\cf2 , \cf5 inplace\cf4 =\cf2 True\cf4 )\
+        x_test.drop(\cf6 " Sep_fav_a"\cf2 , \cf5 axis\cf4 =\cf9 1\cf2 , \cf5 inplace\cf4 =\cf2 True\cf4 )\
+        x_test\
+\
+        \cf2 from \cf4 collections \cf2 import \cf4 Counter\
+        \cf2 from \cf4 sklearn.metrics \cf2 import \cf4 confusion_matrix\
+        \cf2 from \cf4 sklearn.neighbors \cf2 import \cf4 KNeighborsClassifier\
+        \cf2 from \cf4 sklearn.metrics \cf2 import \cf4 confusion_matrix\
+\
+\
+        \cf2 def \cf10 confusion_matrix_plot_kn\cf4 (y_test\cf2 , \cf4 y_pred):\
+            plt.matshow(confusion_matrix(y_test\cf2 , \cf4 y_pred))\
+            plt.title(\cf6 "KNeighborsClassifier Confusion Matrix"\cf4 )\
+            plt.ylabel(\cf6 "True Label"\cf4 )\
+            plt.xlabel(\cf6 "Predicted Label"\cf4 )\
+            plt.grid(\cf5 b\cf4 =\cf2 None\cf4 )\
+            plt.show()\
+\
+        \cf8 # Import knearest neighbors Classifier model\
+        # Create KNN Classifier\
+        \cf7 print\cf4 (\cf6 'KNeighborsClassifier'\cf4 )\
+        knn = KNeighborsClassifier(\cf5 n_neighbors\cf4 =\cf9 5\cf4 )\
+        \cf8 # Train the model using the training sets\
+        \cf4 knn.fit(x_train\cf2 , \cf4 y_train)\
+        \cf8 # Predict the response for test dataset\
+        \cf4 y_pred = knn.predict(x_test)\
+        \cf8 # print(y_pred)\
+        \cf4 Counter([\cf7 type\cf4 (value) \cf2 for \cf4 value \cf2 in \cf4 y_pred])\
+        confusion_matrix_plot_kn(y_test\cf2 , \cf4 y_pred)\
+\
+        \cf2 from \cf4 sklearn.metrics._plot.roc_curve \cf2 import \cf4 roc_curve\
+\
+        \cf6 '''def roc(model, x_test, y_test):\
+            probs = model.predict_proba(x_test)\
+            fpr, tpr, _ = roc_curve(y_test, probs[: 1])\
+            plt.plot(fpr, tpr, marker='.')\
+            plt.xlabel('False Postive Rate')\
+            plt.ylabel('True Positive Rate')\
+            plt.legend(loc='upper right')\
+            plt.show()'''\
+\
+        \cf2 from \cf4 sklearn.metrics \cf2 import \cf4 accuracy_score\
+        acc = accuracy_score(y_test\cf2 , \cf4 y_pred)\
+        acc_knn = acc * \cf9 100\
+        \cf7 print\cf4 (\cf6 'Accuracy score for KNeighborsClassifier is'\cf2 , \cf4 acc_knn)\
+\
+        \cf2 def \cf10 confusion_matrix_plot_lr\cf4 (y_test\cf2 , \cf4 y_pred):\
+            plt.matshow(confusion_matrix(y_test\cf2 , \cf4 y_pred))\
+            plt.title(\cf6 "Logistic regression Confusion Matrix"\cf4 )\
+            plt.ylabel(\cf6 "True Label"\cf4 )\
+            plt.xlabel(\cf6 "Predicted Label"\cf4 )\
+            plt.grid(\cf5 b\cf4 =\cf2 None\cf4 )\
+            plt.show()\
+\
+        \cf7 print\cf4 (\cf6 '\cf2 \\n\cf6 '\cf4 )\
+        \cf7 print\cf4 (\cf6 'Logistic regression'\cf4 )\
+        \cf2 from \cf4 sklearn.linear_model \cf2 import \cf4 LogisticRegression\
+        model_lr = LogisticRegression(\cf5 max_iter\cf4 =\cf9 10000000\cf4 )\
+        model_lr.fit(x_train\cf2 , \cf4 y_train)\
+        intercept = model_lr.intercept_[\cf9 0\cf4 ]\
+        \cf7 print\cf4 (intercept)\
+        y_pred_lr = model_lr.predict(x_test)\
+        \cf8 # print(y_pred_lr)\
+        \cf4 confusion_matrix_plot_lr(y_test\cf2 , \cf4 y_pred_lr)\
+        acc_lr = accuracy_score(y_test\cf2 , \cf4 y_pred_lr)\
+        acc_lr = acc_lr * \cf9 100\
+        \cf7 print\cf4 (\cf6 'Accuracy score for Logistic Regression is '\cf2 , \cf4 acc_lr)\
+        \cf7 print\cf4 (\cf6 '\cf2 \\n\cf6 '\cf4 )\
+\
+        \cf2 def \cf10 confusion_matrix_plot_rfc\cf4 (y_test\cf2 , \cf4 y_pred):\
+            plt.matshow(confusion_matrix(y_test\cf2 , \cf4 y_pred))\
+            plt.title(\cf6 "Random Forest classifier Confusion Matrix"\cf4 )\
+            plt.ylabel(\cf6 "True Label"\cf4 )\
+            plt.xlabel(\cf6 "Predicted Label"\cf4 )\
+            plt.grid(\cf5 b\cf4 =\cf2 None\cf4 )\
+            plt.show()\
+\
+        \cf7 print\cf4 (\cf6 'Random Forest classifier'\cf4 )\
+        \cf2 from \cf4 sklearn.ensemble \cf2 import \cf4 RandomForestClassifier\
+        model_rfc = RandomForestClassifier()\
+        model_rfc.fit(x_train\cf2 , \cf4 y_train)\
+        y_pred_rfc = model_rfc.predict(x_test)\
+        confusion_matrix_plot_rfc(y_test\cf2 , \cf4 y_pred_rfc)\
+        acc_rfc = accuracy_score(y_pred_rfc\cf2 , \cf4 y_test) * \cf9 100\
+        \cf7 print\cf4 (\cf6 'Accuracy score for Random Forest Classifier is'\cf2 , \cf4 acc_rfc)\
+        \cf7 print\cf4 (\cf6 '\cf2 \\n\cf6 '\cf4 )\
+\
+        \cf2 def \cf10 confusion_matrix_plot_dtc\cf4 (y_test\cf2 , \cf4 y_pred):\
+            plt.matshow(confusion_matrix(y_test\cf2 , \cf4 y_pred))\
+            plt.title(\cf6 "Decision Tree Classifier Confusion Matrix"\cf4 )\
+            plt.ylabel(\cf6 "True Label"\cf4 )\
+            plt.xlabel(\cf6 "Predicted Label"\cf4 )\
+            plt.grid(\cf5 b\cf4 =\cf2 None\cf4 )\
+            plt.show()\
+\
+        \cf7 print\cf4 (\cf6 'Decision Tree Classifier'\cf4 )\
+        \cf2 from \cf4 sklearn \cf2 import \cf4 tree\
+        model_dt = tree.DecisionTreeClassifier()\
+        model_dt.fit(x_train\cf2 , \cf4 y_train)\
+        y_pred_dt = model_dt.predict(x_test)\
+        \cf8 # print(y_pred_dt)\
+        \cf4 Counter([\cf7 type\cf4 (value) \cf2 for \cf4 value \cf2 in \cf4 y_pred_dt])\
+        confusion_matrix_plot_dtc(y_test\cf2 , \cf4 y_pred_dt)\
+        acc_dt = accuracy_score(y_test\cf2 , \cf4 y_pred_dt)\
+        acc_dt = acc_dt * \cf9 100\
+        \cf7 print\cf4 (\cf6 'Accuracy score for Decision Tree Classifier is'\cf2 , \cf4 acc_dt)\
+\
+        \cf8 # .................Comparison\
+\
+        \cf4 fig = plt.figure(\cf5 figsize\cf4 =(\cf9 8\cf2 , \cf9 5\cf4 ))\
+        classifiers = [\cf6 'KNN'\cf2 , \cf6 'Logestic Regression'\cf2 , \cf6 'Decision Tree'\cf2 , \cf6 'Random Forest'\cf4 ]\
+        accuracies = [acc_knn\cf2 , \cf4 acc_lr\cf2 , \cf4 acc_dt\cf2 , \cf4 acc_rfc]\
+        \cf8 # creating the bar plot\
+        \cf4 plt.bar(classifiers\cf2 , \cf4 accuracies\cf2 , \cf5 color\cf4 =\cf6 'blue'\cf2 , \cf5 width\cf4 =\cf9 0.3\cf4 )\
+\
+        plt.xlabel(\cf6 "Models"\cf4 )\
+        plt.ylabel(\cf6 "Accuracy in %"\cf4 )\
+        plt.title(\cf6 "Comparison of Classifiers"\cf4 )\
+        plt.show()\
+\
+        next_op = \cf7 input\cf4 (\cf6 "Want to check comparison once more? (yes/no): "\cf4 )\
+        \cf2 if \cf4 next_op == \cf6 "no"\cf4 :\
+            \cf2 break\
+\
+    elif \cf4 com_user == \cf6 'no'\cf4 :\
+        \cf2 break\
+\
+    else\cf4 :\
+        \cf7 print\cf4 (\cf6 'Invalid input'\cf4 )\
+\
+}
